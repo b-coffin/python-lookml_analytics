@@ -1,0 +1,49 @@
+view: fb_ad {
+
+  dimension: account_id {
+    sql: ${TABLE}.account_id ;;
+  }
+
+  dimension_group: date {
+    type: time
+    timeframes: [
+      raw,
+      date,
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.date ;;
+  }
+
+  parameter: usage_date_filter {
+    label: "集計粒度"
+    type: string
+    default_value: "date"
+    allowed_value: {
+      label: "Day"
+      value: "date"
+    }
+    allowed_value: {
+      label: "Week"
+      value: "week"
+    }
+    allowed_value: {
+      label: "Month"
+      value: "month"
+    }
+  }
+
+  dimension: link_click {
+    sql: SAFE_CAST(${TABLE}.link_clicks as numeric) ;;
+  }
+
+  measure: link_click_sum {
+    type: sum
+    sql: ${link_click} ;;
+  }
+
+  dimension: dummy {
+    sql: ${TABLE}.dummy ;;
+  }
+
+}

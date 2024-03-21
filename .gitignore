@@ -1,0 +1,7 @@
+src/__pycache__
+
+src/input/*
+!src/input/sample.txt
+!src/input/sample_forcomp.txt
+
+src/output/*
