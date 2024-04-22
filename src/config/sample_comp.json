@@ -1,0 +1,5 @@
+{
+    "mode": "compare",
+    "target_dir": "sample",
+    "compare_dir": "sample_comp"
+}

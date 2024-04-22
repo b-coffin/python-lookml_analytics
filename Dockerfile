@@ -4,4 +4,4 @@ WORKDIR /src
 
 EXPOSE 3001
 
-RUN pip install pandas
+RUN pip install jinja2 jmespath polars regex
