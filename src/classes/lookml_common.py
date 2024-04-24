@@ -1,3 +1,4 @@
+import os
 import re
 import regex
 
@@ -15,7 +16,7 @@ def get_includes(target: str) -> list[str]: # type: ignore
 
 
 def get_relative_path(path: str, base_dir: str) -> str:
-    return re.sub(rf"^{base_dir}(.+)", r"\1", path)
+    return os.path.relpath(path=path, start=base_dir)
 
 
 def get_absolute_path(relative_path: str, base_dir: str) -> str:
