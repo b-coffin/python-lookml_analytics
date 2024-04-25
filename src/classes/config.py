@@ -9,8 +9,6 @@ class Config:
         self.mode = jmespath.search("mode", config_json) or self.MODE_GET
         self.target_dir = jmespath.search("target_dir", config_json)
         self.compare_dir = jmespath.search("compare_dir", config_json)
-        self.bq_project = jmespath.search("bq.project", config_json)
-        self.bq_dataset = jmespath.search("bq.dataset", config_json)
 
 
     @property
