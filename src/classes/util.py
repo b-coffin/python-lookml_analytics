@@ -48,9 +48,9 @@ def get_basefilename(path: str) -> str:
 
 def get_nowdatetime():
     """
-    現在の日時を YYYYMMDDHHMMSS の形式で返す
+    現在の日時を YYYYMMDD-HHMMSS の形式で返す
     """
-    return datetime.datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y%m%d%H%M%S")
+    return datetime.datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y%m%d-%H%M%S")
 
 
 # 正規表現
