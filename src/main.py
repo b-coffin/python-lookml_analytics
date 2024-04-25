@@ -1,90 +1,10 @@
 import os
 import traceback
 
-from typing import Tuple
-
 from classes.config import Config
-from classes.explore import Explore
-from classes.lookml_common import get_includes, get_params_with_parentheses
-from classes.sqlite3 import SQLite3
 from classes.util import *
-
-
-def get_explores(path: str, base_dir: str) -> list[Explore]: # type: ignore
-    explores: list[Explore] = []
-    with open(path, "r") as f:
-        content = f.read()
-        for matches in get_params_with_parentheses(content, "explore"):
-            explores.append(Explore(matches[0], matches[1], path, base_dir, get_includes(content)))
-    return explores
-
-
-def get_result_for_csv(base_dir: str, input_filenames: list[str]) -> Tuple[list[dict], list[dict], list[dict]]: # type: ignore
-    explores: list[dict] = []
-    views: list[dict] = []
-    fields: list[dict] = []
-
-    for file in input_filenames:
-        print_with_color(f"\n### {file}", COLOR_BLUE)
-
-        exps = get_explores(file, base_dir)
-        
-        for exp in exps:
-            explores.append({
-                "name": exp.name,
-                "label": exp.label,
-                "filepath": exp.filepath
-            })
-            for view in exp.views:
-                views.append({
-                    "explore_name": exp.name,
-                    "explore_label": exp.label,
-                    "view_name": view.name,
-                    "view_label": view.label or view.view_label or view.name,
-                    "sql_table_name": view.sql_table_name,
-                    "derived_table_sql": view.derived_table_sql,
-                    "view_filepath": view.filepath
-                })
-                for field in view.dimensions + view.measures + view.filters:
-                    fields.append({
-                        "explore_name": exp.name,
-                        "explore_label": exp.label,
-                        "view_name": view.name,
-                        "view_label": view.label or view.view_label or view.name,
-                        "field_name": field.name,
-                        "field_label": field.label or field.name,
-                        "hidden": field.hidden
-                    })
-
-        print_with_color("...Done", COLOR_GREEN)
-
-    return explores, views, fields
-
-
-def get_merged_result(left: list[dict], right: list[dict], keys_list: list[list]) -> list[dict]: # type: ignore
-    sqlite3 = SQLite3(os.path.join("db", "dummy.db"))
-
-    columns: list[str] = list(left[0].keys())
-
-    left_tbl_name: str = "left"
-    sqlite3.create_temp_table(left_tbl_name, columns)
-    sqlite3.insert_allcolumns(left_tbl_name, columns, [tuple(row.values()) for row in left])
-    sqlite3.commit()
-
-    right_tbl_name: str = "right"
-    sqlite3.create_temp_table(right_tbl_name, columns)
-    sqlite3.insert_allcolumns(right_tbl_name, columns, [tuple(row.values()) for row in right])
-    sqlite3.commit()
-
-    result = sqlite3.select_for_compare(
-        left_tbl_name=left_tbl_name,
-        right_tbl_name=right_tbl_name,
-        columns=columns,
-        keys_list=keys_list
-    )
-
-    sqlite3.close()
-    return result
+from compare import get_merged_result
+from get import get_result_for_csv
 
 
 def main():
