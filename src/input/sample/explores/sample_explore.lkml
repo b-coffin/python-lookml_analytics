@@ -1,5 +1,5 @@
+include: "/explores/common.lkml"
 include: "/views/dashboard.view.lkml"
-include: "/views/history.view.lkml"
 include: "/views/look.view.lkml"
 include: "/views/user.view.lkml"
 

@@ -2,7 +2,6 @@ import glob
 import re
 
 from classes.lookml_common import (
-    get_absolute_path,
     get_params_with_parentheses,
     get_relative_path
 )
@@ -15,7 +14,7 @@ class Explore:
         self.name: str = name
         self.content: str = content
         self.filepath: str = get_relative_path(filepath, base_dir)
-        self.includes: list[str] = list(map(lambda x: get_absolute_path(x, base_dir), includes))
+        self.includes: list[str] = includes
         self.label: str = self.get_label()
         self.view_name: str = self.get_view_name()
         self.joins: list[str] = self.get_joins()
@@ -42,7 +41,7 @@ class Explore:
     def get_views(self, base_dir: str) -> list[View]: # type: ignore
         views: list[View] = []
         for include in self.includes:
-                for path in glob.glob(re.sub(r"(.*)view$", r"\1view.lkml", include), recursive=True):
+                for path in glob.glob(include, recursive=True):
                     with open(path, "r") as f:
                         content = f.read()
                         for matches in get_params_with_parentheses(content, "view"):

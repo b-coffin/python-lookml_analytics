@@ -35,7 +35,7 @@ view: history {
         sql: ${run_time} ;;
     }
 
-    measure: run_time_sum {
+    measure: run_count {
         label: "実行回数"
         type: count
         sql: ${id} ;;

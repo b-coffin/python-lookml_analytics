@@ -3,6 +3,8 @@ src/**/__pycache__
 src/config/*
 !src/config/sample_get.json
 !src/config/sample_comp.json
+!src/config/sample_get_targetexp.json
+!src/config/sample_comp_targetexp.json
 
 src/db
 

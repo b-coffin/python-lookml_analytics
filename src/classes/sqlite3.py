@@ -46,10 +46,13 @@ class SQLite3:
     def select_for_compare(self, left_tbl_name: str, right_tbl_name: str, columns: list[str], keys_list: list[list]) -> list[dict]: # type: ignore
 
         # join句を作成
-        joins: list[str] = []
-        for keys in keys_list:
-            joins.append(" OR ".join([f"{left_tbl_name}.{key} = {right_tbl_name}.{key}" for key in keys]))
-        join_condition: str = "ON (" + ")\n\tAND (".join(joins) + ")"
+        if len(keys_list) == 0:
+            join_condition: str = "ON TRUE"
+        else:
+            joins: list[str] = []
+            for keys in keys_list:
+                joins.append(" OR ".join([f"{left_tbl_name}.{key} = {right_tbl_name}.{key}" for key in keys]))
+            join_condition: str = "ON (" + ")\n\tAND (".join(joins) + ")"
 
         sql = get_text_used_jinja2template(
             os.path.join("templates", "sql", "compare", "select.sql"),

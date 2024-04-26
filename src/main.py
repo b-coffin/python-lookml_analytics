@@ -23,7 +23,7 @@ def main():
     input_dir: str = os.path.join(os.path.dirname(__file__), "input", config.target_dir)
     input_filenames: list[str] = get_filenames(input_dir, extensions=["lkml", "txt"], words=[])
 
-    explores, views, fields = get_result_for_csv(input_dir, input_filenames)
+    explores, views, fields = get_result_for_csv(input_dir, input_filenames, config.target_explore)
 
     result_dir = os.path.join(os.path.dirname(__file__), "result", f"{get_nowdatetime()}_{config.mode}")
 
@@ -38,25 +38,47 @@ def main():
         compare_dir: str = os.path.join(os.path.dirname(__file__), "input", config.compare_dir)
         compare_filenames: list[str] = get_filenames(compare_dir, extensions=["lkml", "txt"], words=[])
 
-        compare_explores, compare_views, compare_fields = get_result_for_csv(compare_dir, compare_filenames)
+        compare_explores, compare_views, compare_fields = get_result_for_csv(compare_dir, compare_filenames, config.compare_explore)
 
-        write_csv(os.path.join(result_dir, "explores.csv"), get_merged_result(
-            left=explores,
-            right=compare_explores,
-            keys_list=[["label", "name"]]
-        ))
+        if config.compare_explore is None:
 
-        write_csv(os.path.join(result_dir, "views.csv"), get_merged_result(
-            left=views,
-            right=compare_views,
-            keys_list=[["explore_name", "explore_label"], ["view_name", "view_label"]]
-        ))
+            write_csv(os.path.join(result_dir, "explores.csv"), get_merged_result(
+                left=explores,
+                right=compare_explores,
+                keys_list=[["label", "name"]]
+            ))
 
-        write_csv(os.path.join(result_dir, "fields.csv"), get_merged_result(
-            left=fields,
-            right=compare_fields,
-            keys_list=[["explore_name", "explore_label"], ["field_name", "field_label"]]
-        ))
+            write_csv(os.path.join(result_dir, "views.csv"), get_merged_result(
+                left=views,
+                right=compare_views,
+                keys_list=[["explore_name", "explore_label"], ["view_name", "view_label"]]
+            ))
+
+            write_csv(os.path.join(result_dir, "fields.csv"), get_merged_result(
+                left=fields,
+                right=compare_fields,
+                keys_list=[["explore_name", "explore_label"], ["field_name", "field_label"]]
+            ))
+
+        else:
+
+            write_csv(os.path.join(result_dir, "explores.csv"), get_merged_result(
+                left=explores,
+                right=compare_explores,
+                keys_list=[]
+            ))
+
+            write_csv(os.path.join(result_dir, "views.csv"), get_merged_result(
+                left=views,
+                right=compare_views,
+                keys_list=[["view_name", "view_label"]]
+            ))
+
+            write_csv(os.path.join(result_dir, "fields.csv"), get_merged_result(
+                left=fields,
+                right=compare_fields,
+                keys_list=[["field_name", "field_label"]]
+            ))
 
 
 # メイン
