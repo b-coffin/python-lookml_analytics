@@ -37,13 +37,13 @@ class SQLite3:
         return result
 
 
-    def select_all(self, table_name: str, columns: list[str]) -> list[dict]: # type: ignore
+    def select_all(self, table_name: str, columns: list[str]) -> list[Tuple]: # type: ignore
         sql = f"SELECT * FROM {table_name}"
         self.cursor.execute(sql)
         return self.clease_selectresult_to_list(columns)
 
 
-    def select_for_compare(self, left_tbl_name: str, right_tbl_name: str, columns: list[str], keys_list: list[list]) -> list[dict]: # type: ignore
+    def select_for_compare(self, left_tbl_name: str, right_tbl_name: str, columns: list[str], keys_list: list[list]) -> list[Tuple]: # type: ignore
 
         # join句を作成
         if len(keys_list) == 0:

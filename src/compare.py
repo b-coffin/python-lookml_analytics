@@ -1,9 +1,11 @@
 import os
 
+from typing import Tuple
+
 from classes.sqlite3 import SQLite3
 
 
-def get_merged_result(left: list[dict], right: list[dict], keys_list: list[list]) -> list[dict]: # type: ignore
+def get_merged_result(left: list[dict], right: list[dict], keys_list: list[list]) -> list[Tuple]: # type: ignore
     sqlite3 = SQLite3(os.path.join("db", "dummy.db"))
 
     columns: list[str] = list(left[0].keys())
