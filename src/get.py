@@ -54,6 +54,7 @@ def get_result_for_csv(base_dir: str, input_filenames: list[str], target_explore
                         "explore_label": exp.label,
                         "view_name": view.name,
                         "view_label": view.label or view.view_label or view.name,
+                        "group_label": field.group_label,
                         "field_name": field.name,
                         "field_label": field.label or field.name,
                         "hidden": field.hidden

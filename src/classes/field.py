@@ -7,11 +7,17 @@ class Field:
         self.name = name
         self.content = content
         self.label = self.get_label()
+        self.group_label = self.get_group_label()
         self.hidden = self.get_hidden()
 
 
     def get_label(self):
         result: re.Match = re.search(r"\s+label\s*:\s*[\'\"](.+)[\'\"]", self.content)
+        return result.group(1) if result else None
+    
+
+    def get_group_label(self):
+        result: re.Match = re.search(r"\s+group_label\s*:\s*[\'\"](.+)[\'\"]", self.content)
         return result.group(1) if result else None
     
 
