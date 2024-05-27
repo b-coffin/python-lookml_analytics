@@ -1,7 +1,6 @@
 {
     "mode": "compare",
     "target_dir": "sample",
-    "target_explore": "dashboard",
     "compare_dir": "sample",
-    "compare_explore": "look"
+    "explore_name_pairs": [["dashboard", "look"]]
 }

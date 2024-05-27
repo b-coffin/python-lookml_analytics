@@ -9,8 +9,9 @@ class Config:
         self.mode = jmespath.search("mode", config_json) or self.MODE_GET
         self.target_dir = jmespath.search("target_dir", config_json)
         self.compare_dir = jmespath.search("compare_dir", config_json)
-        self.target_explore = jmespath.search("target_explore", config_json)
-        self.compare_explore = jmespath.search("compare_explore", config_json)
+        self.explore_name_pairs: list = jmespath.search("explore_name_pairs", config_json) or []
+        self.view_name_pairs: list = jmespath.search("view_name_pairs", config_json) or []
+
 
     @property
     def mode(self):
@@ -42,14 +43,34 @@ class Config:
 
 
     @property
-    def compare_explore(self):
-        return self._compare_explore
-    
-    @compare_explore.setter
-    def compare_explore(self, value):
-        if self.mode == self.MODE_COMPARE and self.target_explore is not None and value is None:
-            raise ValueError(f"\"compare_explore\" は、mode が \"{self.MODE_COMPARE}\" で compare_dir が指定されている場合は必須です: ")
-        elif self.mode != self.MODE_COMPARE and value is not None:
-            raise ValueError(f"\"compare_explore\" は、右記modeの時のみ指定することができます: \"{self.MODE_COMPARE}\"")
+    def explore_name_pairs(self):
+        return self.__explore_name_pairs
+
+    @explore_name_pairs.setter
+    def explore_name_pairs(self, value):
+        if len(value) == 0:
+            self.__explore_name_pairs = value
         else:
-            self._compare_explore = value
+            if self.mode != 'compare':
+                raise ValueError("\"explore_name_pairs\" はmodeが \"compare\" の時のみ指定可能です")
+            elif not isinstance(value, list) or not all(isinstance(i, list) for i in value):
+                raise ValueError(f"\"explore_name_pairs\" は2重のlist型で指定してください")
+            else:
+                self.__explore_name_pairs = value
+
+
+    @property
+    def view_name_pairs(self):
+        return self.__view_name_pairs
+
+    @view_name_pairs.setter
+    def view_name_pairs(self, value):
+        if len(value) == 0:
+            self.__view_name_pairs = value
+        else:
+            if self.mode != 'compare':
+                raise ValueError("\"view_name_pairs\" はmodeが \"compare\" の時のみ指定可能です")
+            elif not isinstance(value, list) or not all(isinstance(i, list) for i in value):
+                raise ValueError(f"\"view_name_pairs\" は2重のlist型で指定してください")
+            else:
+                self.__view_name_pairs = value

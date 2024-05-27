@@ -2,10 +2,11 @@ import os
 
 from typing import Tuple
 
+from classes.config import Config
 from classes.sqlite3 import SQLite3
 
 
-def get_merged_result(left: list[dict], right: list[dict], keys_list: list[list]) -> list[Tuple]: # type: ignore
+def get_merged_result(config: Config, left: list[dict], right: list[dict], keys_list: list[list]) -> list[Tuple]: # type: ignore
     sqlite3 = SQLite3(os.path.join("db", "dummy.db"))
 
     columns: list[str] = list(left[0].keys())
@@ -21,6 +22,7 @@ def get_merged_result(left: list[dict], right: list[dict], keys_list: list[list]
     sqlite3.commit()
 
     result = sqlite3.select_for_compare(
+        config=config,
         left_tbl_name=left_tbl_name,
         right_tbl_name=right_tbl_name,
         columns=columns,

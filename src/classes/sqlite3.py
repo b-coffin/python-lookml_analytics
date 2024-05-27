@@ -3,6 +3,7 @@ import sqlite3
 
 from typing import Tuple
 
+from classes.config import Config
 from classes.util import *
 
 class SQLite3:
@@ -43,7 +44,7 @@ class SQLite3:
         return self.clease_selectresult_to_list(columns)
 
 
-    def select_for_compare(self, left_tbl_name: str, right_tbl_name: str, columns: list[str], keys_list: list[list]) -> list[Tuple]: # type: ignore
+    def select_for_compare(self, config: Config, left_tbl_name: str, right_tbl_name: str, columns: list[str], keys_list: list[list]) -> list[Tuple]: # type: ignore
 
         # join句を作成
         if len(keys_list) == 0:
@@ -51,7 +52,17 @@ class SQLite3:
         else:
             joins: list[str] = []
             for keys in keys_list:
-                joins.append(" OR ".join([f"{left_tbl_name}.{key} = {right_tbl_name}.{key}" for key in keys]))
+                j = [f"{left_tbl_name}.{key} = {right_tbl_name}.{key}" for key in keys]
+
+                # configのpairsで指定した値のペアが紐づくようにjoin句を追加
+                for key in keys:
+                    j.extend([
+                        f"{left_tbl_name}.{key} = '{v[0]}' AND {right_tbl_name}.{key} = '{v[1]}'"
+                        for v in getattr(config, f"{key}_pairs", [])
+                    ])    
+
+                joins.append(f"({") OR (".join(j)})")
+
             join_condition: str = "ON (" + ")\n\tAND (".join(joins) + ")"
 
         sql = get_text_used_jinja2template(
@@ -62,6 +73,7 @@ class SQLite3:
                 "join_condition": join_condition
             }
         )
+        print("\n" + sql)
         self.cursor.execute(sql)
 
         return self.clease_selectresult_to_list([f"{col}_{left_tbl_name}" for col in columns] + [f"{col}_{right_tbl_name}" for col in columns])

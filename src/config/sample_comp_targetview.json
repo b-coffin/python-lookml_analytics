@@ -1,0 +1,7 @@
+{
+    "mode": "compare",
+    "target_dir": "sample",
+    "compare_dir": "sample",
+    "explore_name_pairs": [["dashboard", "look"]],
+    "view_name_pairs": [["dashboard", "look"]]
+}
