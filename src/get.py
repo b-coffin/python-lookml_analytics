@@ -58,7 +58,9 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
                         "group_label": field.group_label,
                         "field_name": field.name,
                         "field_label": field.label or field.name,
-                        "hidden": field.hidden
+                        "hidden": field.hidden,
+                        "type": field.type,
+                        "sql": field.sql
                     })
 
         print_with_color("...Done", COLOR_GREEN)
