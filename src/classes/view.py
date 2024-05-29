@@ -18,6 +18,7 @@ class View:
         self.filters: list[Field] = self.get_fields(param="filter")
         self.parameter: list[Field] = self.get_fields(param="parameter")
         self.dimension_group: list[Field] = self.get_fields(param="dimension_group")
+        self.fields = self.dimensions + self.measures + self.filters + self.parameter + self.dimension_group
         self.content_without_fields: str = self.get_content_without_fields()
         self.label: str = self.get_label()
         self.view_label: str = self.get_view_label()

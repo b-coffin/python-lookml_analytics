@@ -49,7 +49,7 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
                     "derived_table_sql": view.derived_table_sql,
                     "view_filepath": view.filepath
                 })
-                for field in view.dimensions + view.measures + view.filters:
+                for field in view.fields:
                     fields.append({
                         "explore_name": exp.name,
                         "explore_label": exp.label,
