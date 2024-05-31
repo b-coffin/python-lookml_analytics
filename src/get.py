@@ -44,7 +44,7 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
                     "explore_name": exp.name,
                     "explore_label": exp.label,
                     "view_name": view.name,
-                    "view_label": view.label or view.view_label or view.name,
+                    "view_label": view.label,
                     "sql_table_name": view.sql_table_name,
                     "derived_table_sql": view.derived_table_sql,
                     "view_filepath": view.filepath
@@ -54,10 +54,10 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
                         "explore_name": exp.name,
                         "explore_label": exp.label,
                         "view_name": view.name,
-                        "view_label": view.label or view.view_label or view.name,
+                        "view_label": view.label,
                         "group_label": field.group_label,
                         "field_name": field.name,
-                        "field_label": field.label or field.name,
+                        "field_label": field.label,
                         "hidden": field.hidden,
                         "type": field.type,
                         "sql": field.sql
