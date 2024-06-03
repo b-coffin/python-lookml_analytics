@@ -34,5 +34,5 @@ class Field:
 
 
     def get_sql(self) -> str:
-        result: re.Match = re.search(r"sql\s*:\s*([\s\S]+);;", self.content)
+        result: re.Match = re.search(r"sql\s*:\s*([\s\S]+?);;", self.content)
         return result.group(1).strip() if result else None
