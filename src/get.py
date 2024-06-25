@@ -29,7 +29,7 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
     fields: list[dict] = []
 
     for file in input_filenames:
-        print_with_color(f"\n### {file}", COLOR_BLUE)
+        print(file)
 
         exps = get_explores(config, file, base_dir, target_explores)
         
@@ -63,7 +63,5 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
                         "type": field.type,
                         "sql": field.sql
                     })
-
-        print_with_color("...Done", COLOR_GREEN)
 
     return explores, views, fields

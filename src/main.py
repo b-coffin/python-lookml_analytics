@@ -50,6 +50,8 @@ def main():
             target_explores=[l[1] for l in config.explore_name_pairs if l]
         )
 
+        print_with_color("\n### sql", COLOR_BLUE)
+
         write_csv(os.path.join(result_dir, "explores.csv"), get_merged_result(
             config=config,
             left=explores,
