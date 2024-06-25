@@ -15,8 +15,8 @@ class Explore:
         self.content: str = content
         self.filepath: str = get_relative_path(filepath, base_dir)
         self.includes: list[str] = includes
-        self.label: str = self.get_label()
-        self.view_name: str = self.get_view_name()
+        self.label: str|None = self.get_label()
+        self.view_name: str|None = self.get_view_name()
         self.joins: list[str] = self.get_joins()
         self.views: list[View] = self.get_views(base_dir)
     
