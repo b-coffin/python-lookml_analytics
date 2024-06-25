@@ -68,7 +68,7 @@ def main():
             config=config,
             left=fields,
             right=compare_fields,
-            keys_list=[["explore_name", "explore_label"], ["view_name", "view_label"], ["field_name", "field_label", "sql"]]
+            keys_list=[["explore_name", "explore_label"], ["view_name", "view_label"], ["param"], ["field_name", "field_label", "sql"]]
         ))
 
 

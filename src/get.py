@@ -18,7 +18,7 @@ def get_explores(config: Config, path: str, base_dir: str, target_explores: list
         content = f.read()
         for matches in get_params_with_parentheses(content, "explore"):
             explore_name = matches[0]
-            if config.explore_name_pairs is None or explore_name in target_explores:
+            if len(config.explore_name_pairs) == 0 or explore_name in target_explores:
                 explores.append(Explore(matches[0], matches[1], path, base_dir, get_includes(content, base_dir)))
     return explores
 
@@ -58,6 +58,7 @@ def get_result_for_csv(config: Config, base_dir: str, input_filenames: list[str]
                         "group_label": field.group_label,
                         "field_name": field.name,
                         "field_label": field.label,
+                        "param": field.param,
                         "hidden": field.hidden,
                         "type": field.type,
                         "sql": field.sql
